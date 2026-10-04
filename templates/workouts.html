@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Workouts</h1>
+
+<div class="card">
+    <h2>Add Workout</h2>
+
+    <form method="POST" action="/workouts/add">
+
+        <label>Client</label>
+        <select name="client_id" required>
+            <option value="">Select Client</option>
+
+            {% for client in clients %}
+                <option value="{{ client['id'] }}">
+                    {{ client['name'] }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Date</label>
+        <input type="date" name="date" required>
+
+        <label>Workout Type</label>
+        <select name="type" required>
+            <option value="Strength">Strength</option>
+            <option value="Hypertrophy">Hypertrophy</option>
+            <option value="Cardio">Cardio</option>
+            <option value="Mobility">Mobility</option>
+        </select>
+
+        <label>Duration (minutes)</label>
+        <input type="number" name="duration" min="1" required>
+
+        <label>Notes</label>
+        <textarea name="notes" rows="4"></textarea>
+
+        <button type="submit">Add Workout</button>
+
+    </form>
+</div>
+
+
+<div class="card">
+
+    <h2>Workout History</h2>
+
+    {% if workouts %}
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Duration</th>
+                <th>Notes</th>
+                <th>Exercises</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for workout in workouts %}
+
+            <tr>
+                <td>{{ workout['client_name'] }}</td>
+                <td>{{ workout['date'] }}</td>
+               <td>{{ workout['workout_type'] }}</td>
+<td>{{ workout['duration_min'] }} min</td>
+                <td>{{ workout['notes'] }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('add_exercise', workout_id=workout['id']) }}">
+                        <input type="text" name="name" placeholder="Exercise" required>
+                        <input type="number" name="sets" placeholder="Sets" min="1" required>
+                        <input type="number" name="reps" placeholder="Reps" min="1" required>
+                        <input type="number" name="weight" placeholder="Weight" step="0.1" min="0">
+                        <button type="submit">Add Exercise</button>
+                    </form>
+
+                    {% if workout['exercises'] %}
+                        <ul>
+                        {% for exercise in workout['exercises'] %}
+                            <li>
+                                {{ exercise['name'] }} - {{ exercise['sets'] }} sets x {{ exercise['reps'] }} reps
+                                {% if exercise['weight'] is not none %} - {{ exercise['weight'] }} kg{% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <p>No workouts recorded yet.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

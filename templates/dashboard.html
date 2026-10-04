@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h1>ACEest Dashboard</h1>
+
+<div class="grid">
+
+    <div class="stat">
+        <div>Clients</div>
+        <div class="stat-number">
+            {{ client_count|default(0) }}
+        </div>
+    </div>
+
+    <div class="stat">
+        <div>Workouts</div>
+        <div class="stat-number">
+            {{ workout_count|default(0) }}
+        </div>
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h2>Welcome to ACEest Fitness & Performance</h2>
+
+    <p>
+        Manage clients, fitness programs, memberships,
+        workouts and progress from the dashboard.
+    </p>
+
+</div>
+
+{% endblock %}

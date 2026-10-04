@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}Client Summary{% endblock %}
+
+{% block content %}
+
+<h1>Client Summary</h1>
+
+<div class="card">
+
+    <h2>{{ client['name'] }}</h2>
+
+    <div style="margin-bottom:20px;">
+        <a href="{{ url_for('client_report', client_id=client['id']) }}" class="btn">
+            Download PDF Report
+        </a>
+    </div>
+
+
+
+    <p>
+        <strong>Age:</strong> {{ client['age'] or '-' }}
+        &nbsp; | &nbsp;
+        <strong>Height:</strong> {{ client['height'] or '-' }} cm
+        &nbsp; | &nbsp;
+        <strong>Current Weight:</strong> {{ client['weight'] or '-' }} kg
+    </p>
+
+    <p>
+        <strong>Target Weight:</strong> {{ client['target_weight'] or '-' }} kg
+        &nbsp; | &nbsp;
+        <strong>Membership:</strong> {{ client['membership_status'] or '-' }}
+    </p>
+
+    {% if client['program'] %}
+        <p>
+            <strong>AI Program:</strong> {{ client['program'] }}
+        </p>
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>Add Weekly Progress</h2>
+
+    <form method="POST"
+          action="{{ url_for('add_progress', client_id=client['id']) }}">
+
+        <div class="grid">
+
+            <div>
+                <label>Week</label>
+                <input type="number" name="week" min="1" required>
+            </div>
+
+            <div>
+                <label>Adherence (%)</label>
+                <input type="number"
+                       name="adherence"
+                       min="0"
+                       max="100"
+                       step="0.1"
+                       required>
+            </div>
+
+        </div>
+
+        <button type="submit">
+            Save Progress
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="card">
+
+    <h2>Add Body Metrics</h2>
+
+    <form method="POST"
+          action="{{ url_for('add_metrics', client_id=client['id']) }}">
+
+        <div class="grid">
+
+            <div>
+                <label>Date</label>
+                <input type="date" name="date" required>
+            </div>
+
+            <div>
+                <label>Weight (kg)</label>
+                <input type="number"
+                       name="weight"
+                       step="0.1"
+                       min="0"
+                       required>
+            </div>
+
+            <div>
+                <label>Waist</label>
+                <input type="number"
+                       name="waist"
+                       step="0.1"
+                       min="0">
+            </div>
+
+            <div>
+                <label>Body Fat (%)</label>
+                <input type="number"
+                       name="bodyfat"
+                       step="0.1"
+                       min="0"
+                       max="100">
+            </div>
+
+        </div>
+
+        <button type="submit">
+            Save Metrics
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="card">
+
+    <h2>Weekly Adherence</h2>
+
+    {% if progress %}
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Week</th>
+                <th>Adherence (%)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for item in progress %}
+
+            <tr>
+                <td>Week {{ item['week'] }}</td>
+                <td>{{ item['adherence'] }}%</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+        <p>No weekly adherence data available.</p>
+
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>Adherence Chart</h2>
+
+    {% if progress %}
+        <img
+            src="{{ url_for('adherence_chart', client_id=client['id']) }}"
+            alt="Weekly adherence chart"
+            style="max-width:100%; height:auto;"
+        >
+    {% else %}
+        <p>No adherence data available for chart.</p>
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>Body Metrics</h2>
+
+    {% if metrics %}
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Weight</th>
+                <th>Waist</th>
+                <th>Body Fat (%)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for metric in metrics %}
+
+            <tr>
+                <td>{{ metric['date'] }}</td>
+                <td>{{ metric['weight'] }} kg</td>
+                <td>{{ metric['waist'] or '-' }}</td>
+                <td>{{ metric['bodyfat'] or '-' }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+        <p>No body metric data available.</p>
+
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>Workout History</h2>
+
+    {% if workouts %}
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Duration</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for workout in workouts %}
+
+            <tr>
+                <td>{{ workout['date'] }}</td>
+                <td>{{ workout['workout_type'] }}</td>
+                <td>{{ workout['duration_min'] }} min</td>
+                <td>{{ workout['notes'] or '-' }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+        <p>No workout history available.</p>
+
+    {% endif %}
+
+</div>
+
+
+<a href="{{ url_for('clients') }}">← Back to Clients</a>
+
+{% endblock %}
