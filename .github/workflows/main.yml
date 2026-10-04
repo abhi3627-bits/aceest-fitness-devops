@@ -1,0 +1,63 @@
+name: ACEest Fitness CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-lint:
+    name: Build and Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Syntax check
+        run: python -m py_compile app.py
+
+  docker-build:
+    name: Docker Image Assembly
+    needs: build-lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t aceest-fitness:${{ github.sha }} .
+
+      - name: Save Docker image
+        run: docker save aceest-fitness:${{ github.sha }} -o aceest-fitness.tar
+
+      - name: Upload Docker image
+        uses: actions/upload-artifact@v4
+        with:
+          name: aceest-docker-image
+          path: aceest-fitness.tar
+
+  container-test:
+    name: Automated Testing in Container
+    needs: docker-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: aceest-docker-image
+
+      - name: Load Docker image
+        run: docker load -i aceest-fitness.tar
+
+      - name: Run Pytest inside container
+        run: docker run --rm aceest-fitness:${{ github.sha }} pytest -q
