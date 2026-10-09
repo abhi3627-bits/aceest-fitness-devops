@@ -43,7 +43,6 @@ The project demonstrates a complete DevOps workflow using Git/GitHub, Pytest, Do
 - Git/GitHub
 - GitHub Actions
 
-EOF
 
 ## Project Structure
 
@@ -211,9 +210,6 @@ The workflow contains three stages:
 
 The GitHub Actions workflow was successfully executed and completed all stages successfully.
 
-Then press **Ctrl + D**.
-
-When you are back at the normal prompt, reply **done**.
 ## CI/CD Flow
 
 The overall DevOps workflow is:
