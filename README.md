@@ -281,3 +281,29 @@ GitHub repository:
 https://github.com/abhi3627-bits/aceest-fitness-devops
 
 The repository is public and contains the application source code, automated tests, Docker configuration, Jenkins pipeline, GitHub Actions workflow, and project documentation.
+
+## Evidence
+
+Screenshots documenting the CI/CD pipeline, branch/PR history, and Jenkins/Docker execution.
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-06-54.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-09-38.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-10-52.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-12-33.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-13-43.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-15-12.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-15-37.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_13-16-08.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_23-07-17.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_23-09-23.png)
+
+![Screenshot](screenshots/Screenshot_2026-10-09_23-12-26.png)
