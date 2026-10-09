@@ -5,7 +5,7 @@ import random
 import os
 
 app = Flask(__name__)
-app.secret_key = "aceest-dev-secret-key"
+app.secret_key = os.environ.get("SECRET_KEY", "aceest-dev-secret-key")
 
 DATABASE = os.path.join(os.path.dirname(__file__), "aceest_fitness.db")
 
